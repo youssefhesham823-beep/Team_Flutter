@@ -32,7 +32,7 @@ class ProductVariants extends StatelessWidget {
             SizedBox(height: 15.h),
             
             Text(
-              'Color: ${productColors[state.selectedColorIndex]['name']}',
+              'Color: ${productColors[(state as ProductDetailsLoaded).selectedColorIndex]['name']}',
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
             SizedBox(height: 12.h),
@@ -76,7 +76,7 @@ class ProductVariants extends StatelessWidget {
                       },
                       child: _buildModelButton(
                         title: productModels[index]['title'],
-                        isSelected: state.selectedModelIndex == index, // بنقارن بالـ state
+                        isSelected: state.selectedModelIndex == index,
                         isDisabled: productModels[index]['isDisabled'],
                       ),
                     ),
