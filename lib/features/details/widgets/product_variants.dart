@@ -1,96 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; // import bloc
+import '../cubit/product_details_cubit.dart';
+import '../cubit/product_details_state.dart';
 
-// 1. حولناها لـ StatefulWidget
-class ProductVariants extends StatefulWidget {
+class ProductVariants extends StatelessWidget {
   const ProductVariants({Key? key}) : super(key: key);
 
   @override
-  State<ProductVariants> createState() => _ProductVariantsState();
-}
-
-class _ProductVariantsState extends State<ProductVariants> {
-  int selectedColorIndex = 0; 
-  int selectedModelIndex = 0;
-
-  final List<Map<String, dynamic>> productColors = [
-    {'name': 'Midnight Blue', 'color': const Color(0xFF1E293B)},
-    {'name': 'Silver', 'color': const Color(0xFFE2E8F0)},
-    {'name': 'Matte Black', 'color': const Color(0xFF111827)},
-  ];
-
-  final List<Map<String, dynamic>> productModels = [
-    {'title': 'Standard', 'isDisabled': false},
-    {'title': 'Pro', 'isDisabled': false},
-    {'title': 'Max', 'isDisabled': false},
-  ];
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 15.h),
-        
-        Text(
-          'Color: ${productColors[selectedColorIndex]['name']}',
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-        ),
-        SizedBox(height: 12.h),
-        Row(
-          children: List.generate(productColors.length, (index) {
-            return Padding(
-              padding: EdgeInsets.only(right: 12.w),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedColorIndex = index;
-                  });
-                },
-                child: _buildColorCircle(
-                  color: productColors[index]['color'],
-                  isSelected: selectedColorIndex == index,
-                ),
-              ),
-            );
-          }),
-        ),
-        SizedBox(height: 24.h),
+    final List<Map<String, dynamic>> productColors = [
+      {'name': 'Midnight Blue', 'color': const Color(0xFF1E293B)},
+      {'name': 'Silver', 'color': const Color(0xFFE2E8F0)},
+      {'name': 'Matte Black', 'color': const Color(0xFF111827)},
+    ];
 
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final List<Map<String, dynamic>> productModels = [
+      {'title': 'Standard', 'isDisabled': false},
+      {'title': 'Pro', 'isDisabled': false},
+      {'title': 'Max', 'isDisabled': false},
+    ];
+
+    return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+      builder: (context, state) {
+        
+        var cubit = context.read<ProductDetailsCubit>();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Model', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
-          ],
-        ),
-        SizedBox(height: 12.h),
-        Row(
-          children: List.generate(productModels.length, (index) {
-            return Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(right: index != productModels.length - 1 ? 8.w : 0),
-                child: GestureDetector(
-                  onTap: () {
-                    if (!productModels[index]['isDisabled']) {
-                      setState(() {
-                        selectedModelIndex = index;
-                      });
-                    }
-                  },
-                  child: _buildModelButton(
-                    title: productModels[index]['title'],
-                    isSelected: selectedModelIndex == index,
-                    isDisabled: productModels[index]['isDisabled'],
+            SizedBox(height: 15.h),
+            
+            Text(
+              'Color: ${productColors[(state as ProductDetailsLoaded).selectedColorIndex]['name']}',
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+            ),
+            SizedBox(height: 12.h),
+            // ---------- colors ---------------
+            Row(
+              children: List.generate(productColors.length, (index) {
+                return Padding(
+                  padding: EdgeInsets.only(right: 12.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      cubit.changeColor(index);
+                    },
+                    child: _buildColorCircle(
+                      color: productColors[index]['color'],
+                      isSelected: state.selectedColorIndex == index, // بنقارن بالـ state
+                    ),
                   ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ],
+                );
+              }),
+            ),
+            SizedBox(height: 24.h),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Model', style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600)),
+              ],
+            ),
+            // -- models --------------
+            SizedBox(height: 12.h),
+            Row(
+              children: List.generate(productModels.length, (index) {
+                return Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: index != productModels.length - 1 ? 8.w : 0),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (!productModels[index]['isDisabled']) {
+                          cubit.changeModel(index);
+                        }
+                      },
+                      child: _buildModelButton(
+                        title: productModels[index]['title'],
+                        isSelected: state.selectedModelIndex == index,
+                        isDisabled: productModels[index]['isDisabled'],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ],
+        );
+      },
     );
   }
-  
+
   Widget _buildColorCircle({required Color color, required bool isSelected}) {
     return Container(
       width: 40.w,

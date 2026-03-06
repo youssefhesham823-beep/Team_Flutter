@@ -1,6 +1,10 @@
 import 'package:e_commerce_app/features/home/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; // <-- Import Bloc
+
+import '../cubit/product_details_cubit.dart';
+import '../cubit/product_details_state.dart';
 import '../widgets/add_to_cart_section.dart';
 import '../widgets/product_header_info.dart';
 import '../widgets/product_image_gallery.dart';
@@ -15,32 +19,51 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F6F8), 
-      // 1. Use the CustomAppBar instead of the inline one
-      appBar: const CustomAppBar(), 
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image Gallery (Main Image & Thumbnails)
-              const ProductImageGallery(),
-              
-              SizedBox(height: 24.h),
-              
-              // Product Header Info (Title, Rating, Price, Description)
-              const ProductHeaderInfo(),
-              
-              // Variants (Colors and Models)
-              const ProductVariants(),
-              
-              const AddToCartSection(),
+    return BlocProvider(
+      // التعديل هنا: بنخلق الـ Cubit وننادي على دالة التحميل فوراً (..)
+      create: (context) => ProductDetailsCubit()..fetchProductDetails(),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF5F6F8), 
+        appBar: const CustomAppBar(), 
+        
+        // التعديل هنا: بنسمع للـ State عشان نحدد هنعرض إيه
+        body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+          builder: (context, state) {
+            
+            // 1. لو بيحمل، اعرض الدائرة
+            if (state is ProductDetailsLoading || state is ProductDetailsInitial) {
+              return const Center(child: CircularProgressIndicator(color: Color(0xFF0B50DA)));
+            }
+            
+            // 2. لو حصل إيرور، اعرض رسالة
+            if (state is ProductDetailsError) {
+              return Center(
+                child: Text(state.message, style: TextStyle(fontSize: 18.sp, color: Colors.red)),
+              );
+            }
 
-              const TrustBadges(),
-            ],
-          ),
+            // 3. لو الداتا وصلت (Loaded)، اعرض الشاشة بتاعتك عادي جداً
+            if (state is ProductDetailsLoaded) {
+              return SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const ProductImageGallery(),
+                      SizedBox(height: 24.h),
+                      ProductHeaderInfo(product: product),
+                      const ProductVariants(),
+                      AddToCartSection(product: product),
+                      const TrustBadges(),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return const SizedBox(); // حماية إضافية
+          },
         ),
       ),
     );
