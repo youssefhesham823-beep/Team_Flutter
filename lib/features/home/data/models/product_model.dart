@@ -3,18 +3,26 @@ class ProductModel {
   final String name;
   final String brand;
   final double price;
-  final String image;
+  final double? oldPrice;
+  final List<String> images;
+  final String description;
   final bool isOnSale;
   final bool isFavorite;
-  final String category; // newIn, bestSeller, sale, all
+  final String category;
+  final double rating;
+  final int reviewsCount;
 
   const ProductModel({
     required this.id,
     required this.name,
     required this.brand,
     required this.price,
-    required this.image,
+    this.oldPrice,
+    required this.images,
+    required this.description,
     required this.category,
+    required this.rating,
+    required this.reviewsCount,
     this.isOnSale = false,
     this.isFavorite = false,
   });
@@ -25,8 +33,12 @@ class ProductModel {
       name: json['name'],
       brand: json['brand'],
       price: json['price'].toDouble(),
-      image: json['image'],
+      oldPrice: json['oldPrice']?.toDouble(),
+      images: List<String>.from(json['images']),
+      description: json['description'],
       category: json['category'],
+      rating: json['rating'].toDouble(),
+      reviewsCount: json['reviewsCount'],
       isOnSale: json['isOnSale'] ?? false,
       isFavorite: json['isFavorite'] ?? false,
     );
@@ -38,8 +50,12 @@ class ProductModel {
       'name': name,
       'brand': brand,
       'price': price,
-      'image': image,
+      'oldPrice': oldPrice,
+      'images': images,
+      'description': description,
       'category': category,
+      'rating': rating,
+      'reviewsCount': reviewsCount,
       'isOnSale': isOnSale,
       'isFavorite': isFavorite,
     };
@@ -50,8 +66,12 @@ class ProductModel {
     String? name,
     String? brand,
     double? price,
-    String? image,
+    double? oldPrice,
+    List<String>? images,
+    String? description,
     String? category,
+    double? rating,
+    int? reviewsCount,
     bool? isOnSale,
     bool? isFavorite,
   }) {
@@ -60,8 +80,12 @@ class ProductModel {
       name: name ?? this.name,
       brand: brand ?? this.brand,
       price: price ?? this.price,
-      image: image ?? this.image,
+      oldPrice: oldPrice ?? this.oldPrice,
+      images: images ?? this.images,
+      description: description ?? this.description,
       category: category ?? this.category,
+      rating: rating ?? this.rating,
+      reviewsCount: reviewsCount ?? this.reviewsCount,
       isOnSale: isOnSale ?? this.isOnSale,
       isFavorite: isFavorite ?? this.isFavorite,
     );
