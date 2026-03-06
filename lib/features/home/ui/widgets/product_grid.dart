@@ -1,6 +1,9 @@
 import 'package:e_commerce_app/features/details/ui/details_screen.dart';
+import 'package:e_commerce_app/features/favorites/ui/cubit/favorites_cubit.dart';
+import 'package:e_commerce_app/features/favorites/ui/cubit/favorites_state.dart';
 import 'package:e_commerce_app/features/home/data/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductGrid extends StatelessWidget {
@@ -72,121 +75,132 @@ class ProductGrid extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          Column(
-            children: products.map((product) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => DetailsScreen(product: product),
+          BlocBuilder<FavoritesCubit, FavoritesState>(
+            builder: (context, favState) {
+              final favorites = context.read<FavoritesCubit>().getFavorites();
+              return Column(
+                children: products.map((product) {
+                  final isFavorite = favorites.any((p) => p.id == product.id);
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => DetailsScreen(product: product),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.r),
+                        color: Colors.grey.shade100,
+                      ),
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12.r),
+                            child: Image.network(
+                              product.image,
+                              height: 280.h,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          if (product.isOnSale)
+                            Positioned(
+                              top: 12.h,
+                              left: 12.w,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10.w,
+                                  vertical: 4.h,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(6.r),
+                                ),
+                                child: Text(
+                                  'SALE',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          Positioned(
+                            top: 12.h,
+                            right: 12.w,
+                            child: GestureDetector(
+                              onTap: () {
+                                context.read<FavoritesCubit>().toggleFavorite(product);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(8.w),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                                  size: 18.sp,
+                                  color: isFavorite ? Colors.red : Colors.black87,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(12.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(12.r),
+                                  bottomRight: Radius.circular(12.r),
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    product.name,
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    product.brand,
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    '\$${product.price.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 16.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: Colors.grey.shade100,
-                  ),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12.r),
-                        child: Image.network(
-                          product.image,
-                          height: 280.h,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      if (product.isOnSale)
-                        Positioned(
-                          top: 12.h,
-                          left: 12.w,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 10.w,
-                              vertical: 4.h,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(6.r),
-                            ),
-                            child: Text(
-                              'SALE',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 11.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      Positioned(
-                        top: 12.h,
-                        right: 12.w,
-                        child: Container(
-                          padding: EdgeInsets.all(8.w),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.favorite_border,
-                            size: 18.sp,
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(12.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12.r),
-                              bottomRight: Radius.circular(12.r),
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                product.name,
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(height: 2.h),
-                              Text(
-                                product.brand,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  color: Colors.grey.shade500,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                '\$${product.price.toStringAsFixed(2)}',
-                                style: TextStyle(
-                                  fontSize: 15.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                }).toList(),
               );
-            }).toList(),
+            },
           ),
         ],
       ),

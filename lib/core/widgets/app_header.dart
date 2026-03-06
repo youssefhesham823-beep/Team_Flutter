@@ -1,5 +1,5 @@
 import 'package:e_commerce_app/features/cart/ui/cart_screen.dart';
-import 'package:e_commerce_app/features/favorites/ui/favorite_screen.dart';
+import 'package:e_commerce_app/features/favorites/ui/screen/favorite_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
