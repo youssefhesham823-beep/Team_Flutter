@@ -35,4 +35,17 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       ));
     }
   }
+
+  void changeImage(int newIndex) {
+    if (state is ProductDetailsLoaded) {
+      final currentState = state as ProductDetailsLoaded;
+      
+      emit(ProductDetailsLoaded(
+        selectedColorIndex: currentState.selectedColorIndex,
+        selectedModelIndex: currentState.selectedModelIndex,
+        selectedImageIndex: newIndex,
+      ));
+    }
+  }
+
 }

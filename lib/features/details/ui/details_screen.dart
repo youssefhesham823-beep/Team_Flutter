@@ -45,7 +45,7 @@ class DetailsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const ProductImageGallery(),
+                     ProductImageGallery(product: product,),
                       SizedBox(height: 24.h),
                       ProductHeaderInfo(product: product),
                       const ProductVariants(),
