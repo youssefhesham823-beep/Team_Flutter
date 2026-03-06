@@ -9,7 +9,7 @@ class BannerWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Container(
-        height: 320.h,
+        height: MediaQuery.of(context).size.height * 0.5,
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.r),
