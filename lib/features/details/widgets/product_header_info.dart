@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../home/data/models/product_model.dart';
 
 class ProductHeaderInfo extends StatelessWidget {
-  const ProductHeaderInfo({Key? key}) : super(key: key);
+  final ProductModel product;
+  const ProductHeaderInfo({Key? key ,required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +13,7 @@ class ProductHeaderInfo extends StatelessWidget {
       children: [
         // Product Title
         Text(
-          'Ultra-Fidelity Wireless Over-Ear Headphones',
+          product.name,
           style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 12.h),
@@ -39,7 +41,7 @@ class ProductHeaderInfo extends StatelessWidget {
           children: [
             // Current Price
             Text(
-              '\$299.00',
+              '${product.price.toString()}\$',
               style: TextStyle(fontSize: 28.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(width: 12.w),

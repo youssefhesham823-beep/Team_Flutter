@@ -31,12 +31,12 @@ class DetailsScreen extends StatelessWidget {
               SizedBox(height: 24.h),
               
               // Product Header Info (Title, Rating, Price, Description)
-              const ProductHeaderInfo(),
+              ProductHeaderInfo(product: product),
               
               // Variants (Colors and Models)
               const ProductVariants(),
               
-              const AddToCartSection(),
+              AddToCartSection(product : product),
 
               const TrustBadges(),
             ],

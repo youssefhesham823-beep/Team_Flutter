@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../cart/ui/cart_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           Icon(Icons.headphones, color: const Color(0xFF0B50DA), size: 24.sp),
           SizedBox(width: 8.w),
           Text(
-            'Sonic',
+            'MINIMAL',
             style: TextStyle(
               color: Colors.black,
               fontSize: 18.sp,
@@ -42,7 +43,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             color: Colors.grey.shade700,
             size: 24.sp,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => CartScreen()),
+            );
+          },
         ),
         SizedBox(width: 8.w),
       ],

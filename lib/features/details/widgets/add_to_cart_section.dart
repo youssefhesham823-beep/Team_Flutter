@@ -1,10 +1,12 @@
+import 'package:e_commerce_app/features/home/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// Import the shared button from your core folder
 import '../../../core/widgets/shared_add_to_cart_button.dart';
+import '../../cart/ui/cart_screen.dart';
 
 class AddToCartSection extends StatelessWidget {
-  const AddToCartSection({Key? key}) : super(key: key);
+  final ProductModel product;
+  const AddToCartSection({Key? key , required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,10 @@ class AddToCartSection extends StatelessWidget {
           Expanded(
             child: SharedAddToCartButton(
               onPressed: () {
-                // TODO: Add to cart logic here later
+                Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => CartScreen(product : product)),
+            );
               },
               text: 'Add to Cart',
             ),
