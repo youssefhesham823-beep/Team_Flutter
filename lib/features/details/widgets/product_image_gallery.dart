@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../home/data/models/product_model.dart';
 
 class ProductImageGallery extends StatelessWidget {
+
+
   final ProductModel product;
   const ProductImageGallery({Key? key, required this.product})
     : super(key: key);
