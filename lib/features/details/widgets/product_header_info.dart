@@ -28,7 +28,7 @@ class ProductHeaderInfo extends StatelessWidget {
             SizedBox(width: 8.w),
             // Reviews count text
             Text(
-              '124 Reviews',
+              '${product.reviewsCount.toString()} Reviews',
               style: TextStyle(color: const Color(0xFF0B50DA), fontSize: 14.sp, fontWeight: FontWeight.w500),
             ),
           ],
@@ -47,7 +47,7 @@ class ProductHeaderInfo extends StatelessWidget {
             SizedBox(width: 12.w),
             // Old Price (Line through)
             Text(
-              '\$349.00',
+              '\$${product.oldPrice}',
               style: TextStyle(
                 fontSize: 18.sp,
                 color: Colors.grey,
@@ -78,7 +78,7 @@ class ProductHeaderInfo extends StatelessWidget {
 
         // Product Description
         Text(
-          'Experience immersive sound with active noise cancellation and a 30-hour battery life. Designed for audiophiles, these headphones feature memory foam ear cups for all-day comfort and seamless Bluetooth 5.2 connectivity.',
+          product.description,
           style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade700, height: 1.5),
         ),
       ],

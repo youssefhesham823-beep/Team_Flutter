@@ -58,7 +58,7 @@ class HomeRepository {
       name: 'Wool Coat',
       brand: 'Winter Essentials',
       price: 220.00,
-      oldPrice: null,
+      oldPrice: 300,
       rating: 4.9,
       reviewsCount: 412,
       images: [

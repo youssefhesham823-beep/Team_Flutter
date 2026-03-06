@@ -19,20 +19,39 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   void changeColor(int newIndex) {
     if (state is ProductDetailsLoaded) {
       final currentState = state as ProductDetailsLoaded;
-      emit(ProductDetailsLoaded(
-        selectedColorIndex: newIndex,
-        selectedModelIndex: currentState.selectedModelIndex,
-      ));
+      emit(
+        ProductDetailsLoaded(
+          selectedColorIndex: newIndex,
+          selectedModelIndex: currentState.selectedModelIndex,
+        ),
+      );
     }
   }
 
   void changeModel(int newIndex) {
     if (state is ProductDetailsLoaded) {
       final currentState = state as ProductDetailsLoaded;
-      emit(ProductDetailsLoaded(
-        selectedColorIndex: currentState.selectedColorIndex,
-        selectedModelIndex: newIndex,
-      ));
+      emit(
+        ProductDetailsLoaded(
+          selectedColorIndex: currentState.selectedColorIndex,
+          selectedModelIndex: newIndex,
+        ),
+      );
     }
   }
+
+  void changeImage(int newIndex) {
+    if (state is ProductDetailsLoaded) {
+      final currentState = state as ProductDetailsLoaded;
+
+      emit(
+        ProductDetailsLoaded(
+          selectedColorIndex: currentState.selectedColorIndex,
+          selectedModelIndex: currentState.selectedModelIndex,
+          selectedImageIndex: newIndex,
+        ),
+      );
+    }
+  }
+
 }
