@@ -20,29 +20,24 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      // التعديل هنا: بنخلق الـ Cubit وننادي على دالة التحميل فوراً (..)
       create: (context) => ProductDetailsCubit()..fetchProductDetails(),
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F6F8), 
         appBar: const CustomAppBar(), 
         
-        // التعديل هنا: بنسمع للـ State عشان نحدد هنعرض إيه
         body: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
           builder: (context, state) {
             
-            // 1. لو بيحمل، اعرض الدائرة
             if (state is ProductDetailsLoading || state is ProductDetailsInitial) {
               return const Center(child: CircularProgressIndicator(color: Color(0xFF0B50DA)));
             }
             
-            // 2. لو حصل إيرور، اعرض رسالة
             if (state is ProductDetailsError) {
               return Center(
                 child: Text(state.message, style: TextStyle(fontSize: 18.sp, color: Colors.red)),
               );
             }
 
-            // 3. لو الداتا وصلت (Loaded)، اعرض الشاشة بتاعتك عادي جداً
             if (state is ProductDetailsLoaded) {
               return SingleChildScrollView(
                 child: Padding(
@@ -62,7 +57,7 @@ class DetailsScreen extends StatelessWidget {
               );
             }
 
-            return const SizedBox(); // حماية إضافية
+            return const SizedBox(); 
           },
         ),
       ),
