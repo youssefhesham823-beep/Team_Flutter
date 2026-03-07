@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/features/favorites/widgets/FavoriteAppBar.dart';
 import 'package:e_commerce_app/features/favorites/widgets/FavoriteHeader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,9 @@ class FavoriteScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Favoriteappbar(),  
+                  const SizedBox(height: 3),
+
                   FavoriteHeader(count: favoriteProducts.length),
 
                   const SizedBox(height: 32),

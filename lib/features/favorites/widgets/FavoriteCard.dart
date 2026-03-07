@@ -13,22 +13,12 @@ class FavoriteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!product.isFavorite) {
-      return const SizedBox.shrink();
-    }
+    if (!product.isFavorite) return const SizedBox.shrink();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,57 +29,37 @@ class FavoriteCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: Image.network(
-                  product.images.isNotEmpty
-                      ? product.images[0]
-                      : 'https://via.placeholder.com/350',
-                  height: 350,
+                  product.images.isNotEmpty ? product.images[0] : 'https://via.placeholder.com/350',
                   width: double.infinity,
+                  height: 180, // ارتفاع متوازن للشبكة
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Center(child: Icon(Icons.broken_image, size: 50)),
                 ),
               ),
-
               Positioned(
-                top: 12,
-                right: 12,
+                top: 10,
+                right: 10,
                 child: GestureDetector(
                   onTap: onRemove,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: 20,
-                    ),
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Colors.white,
+                    child: const Icon(Icons.favorite, color: Colors.red, size: 16),
                   ),
                 ),
               ),
-              // Sale/Low Stock Badge
               if (product.isOnSale)
                 Positioned(
-                  top: 12,
-                  left: 12,
+                  top: 10,
+                  left: 10,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.8),
-                      borderRadius: BorderRadius.circular(6),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: const Text(
                       'SALE',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -98,69 +68,96 @@ class FavoriteCard extends StatelessWidget {
 
           // 2. Info Section
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(4, 10, 4, 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Name and Price in Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Text(
                         product.name,
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF0F172A),
                         ),
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
                     Text(
                       '\$${product.price}',
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF0B50DA),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                
+                // Brand or Subtitle
+                const SizedBox(height: 2),
                 Text(
-                  product.brand,
+                  product.brand ?? 'Street Style',
                   style: const TextStyle(
-                    color: Color(0xFF64748B),
-                    fontSize: 14,
+                    color: Color(0xFF94A3B8),
+                    fontSize: 11,
                   ),
                 ),
-                const SizedBox(height: 16),
 
-                // 3. Action Buttons
-                ElevatedButton.icon(
+                const SizedBox(height: 12),
+
+                // Add to Cart Button
+                ElevatedButton(
                   onPressed: () {},
-                  icon: const Icon(Icons.add_shopping_cart, size: 20),
-                  label: const Text('Add to Cart'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0B50DA),
                     foregroundColor: Colors.white,
-                    minimumSize: const Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 38),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8),
                     ),
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add_shopping_cart, size: 16),
+                      SizedBox(width: 6),
+                      Text(
+                        'Add to Cart',
+                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 8),
-                TextButton.icon(
-                  onPressed: onRemove,
-                  icon: const Icon(Icons.delete_outline, size: 18),
-                  label: const Text('Remove from favorites'),
-                  style: TextButton.styleFrom(
-                    foregroundColor: const Color(0xFF94A3B8),
+
+                // Remove Button
+                const SizedBox(height: 4),
+                InkWell(
+                  onTap: onRemove,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.delete_outline_rounded, size: 14, color: Colors.grey[400]),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Remove from favorites',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
