@@ -20,4 +20,11 @@ class FavoritesCubit extends Cubit<FavoritesState> {
   }
 
   List<ProductModel> getFavorites() => _favorites;
+
+  List<ProductModel> searchFavorites(String query) {
+    if (query.isEmpty) return _favorites;
+    return _favorites
+        .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+  }
 }
