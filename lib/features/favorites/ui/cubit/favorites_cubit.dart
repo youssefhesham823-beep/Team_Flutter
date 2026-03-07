@@ -9,11 +9,13 @@ class FavoritesCubit extends Cubit<FavoritesState> {
 
   void toggleFavorite(ProductModel product) {
     final index = _favorites.indexWhere((p) => p.id == product.id);
+
     if (index >= 0) {
       _favorites.removeAt(index);
     } else {
-      _favorites.add(product);
+      _favorites.add(product.copyWith(isFavorite: true));
     }
+
     emit(FavoritesUpdated(List.from(_favorites)));
   }
 
