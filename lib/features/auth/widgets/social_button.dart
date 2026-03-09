@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SocialLoginButton extends StatelessWidget {
+class SocialButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final VoidCallback onPressed;
 
-  const SocialLoginButton({
+  const SocialButton({
     super.key,
     required this.label,
     required this.icon,
