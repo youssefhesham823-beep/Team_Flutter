@@ -1,3 +1,6 @@
+import 'package:e_commerce_app/features/auth/widgets/AppTextButton.dart';
+import 'package:e_commerce_app/features/auth/widgets/AppTextFormField.dart';
+import 'package:e_commerce_app/features/auth/widgets/SocialLoginButton.dart';
 import 'package:flutter/material.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -37,65 +40,30 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 8),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Enter your full name",
-                  filled: true,
-                  fillColor: const Color(0xFFF9FAFB),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
+              const AppTextFormField(hintText: "Enter your full name"),
               const SizedBox(height: 20),
               const Text(
                 "Email Address",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 8),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Enter your email address",
-                  filled: true,
-                  fillColor: const Color(0xFFF9FAFB),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
+              const AppTextFormField(hintText: "Enter your email address"),
               const SizedBox(height: 20),
               const Text(
                 "Create Password",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
               ),
               const SizedBox(height: 8),
-              TextField(
-                obscureText: isObscure,
-                decoration: InputDecoration(
-                  hintText: "Create a password",
-                  hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      isObscure
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      size: 20,
-                      color: const Color.fromARGB(255, 124, 124, 124),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isObscure = !isObscure;
-                      });
-                    },
+              AppTextFormField(
+                hintText: "Create a password",
+                isObscureText: isObscure,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    isObscure
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
                   ),
-                  filled: true,
-                  fillColor: const Color(0xFFF9FAFB),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
+                  onPressed: () => setState(() => isObscure = !isObscure),
                 ),
               ),
               const SizedBox(height: 16),
@@ -125,28 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ],
               ),
               const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1A56DB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text(
-                    "Create Account",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
+              AppTextButton(buttonText: "Create Account", onPressed: () {}),
               const SizedBox(height: 24),
               Center(
                 child: GestureDetector(
@@ -169,29 +116,32 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const Center(
-                child: Text(
-                  "Or continue with",
-                  style: TextStyle(color: Color(0xFF6B7280), fontSize: 12),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
+              const Row(
                 children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.g_mobiledata),
-                      label: const Text("Google"),
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      "Or continue with",
+                      style: TextStyle(color: Color(0xFF6B7280), fontSize: 12),
                     ),
                   ),
+                  Expanded(child: Divider()),
+                ],
+              ),
+              const SizedBox(height: 22),
+              Row(
+                children: [
+                  SocialLoginButton(
+                    label: "Google",
+                    icon: Icons.g_mobiledata,
+                    onPressed: () {},
+                  ),
                   const SizedBox(width: 12),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.apple),
-                      label: const Text("Apple"),
-                    ),
+                  SocialLoginButton(
+                    label: "Apple",
+                    icon: Icons.apple,
+                    onPressed: () {},
                   ),
                 ],
               ),

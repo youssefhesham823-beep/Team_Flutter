@@ -1,4 +1,8 @@
 import 'package:e_commerce_app/features/auth/ui/signup/signup_screen.dart';
+import 'package:e_commerce_app/features/auth/widgets/AppTextButton.dart';
+import 'package:e_commerce_app/features/auth/widgets/AppTextFormField.dart';
+import 'package:e_commerce_app/features/auth/widgets/SocialLoginButton.dart';
+import 'package:e_commerce_app/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -49,18 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: "name@example.com",
-                        hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
-                        prefixIcon: const Icon(Icons.email_outlined, size: 20),
-                        filled: true,
-                        fillColor: const Color(0xFFF9FAFB),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
+                    const AppTextFormField(
+                      hintText: "name@example.com",
+                      prefixIcon: Icon(Icons.email_outlined, size: 20),
                     ),
                     const SizedBox(height: 20),
 
@@ -72,28 +67,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    TextField(
-                      obscureText: isObscure,
-                      decoration: InputDecoration(
-                        hintText: "Enter your password",
-                        hintStyle: const TextStyle(color: Color(0xFF9CA3AF)),
-                        prefixIcon: const Icon(Icons.lock_outline, size: 20),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            isObscure
-                                ? Icons.visibility_off_outlined
-                                : Icons.visibility_outlined,
-                            size: 20,
-                          ),
-                          onPressed: () =>
-                              setState(() => isObscure = !isObscure),
+                    AppTextFormField(
+                      hintText: "Enter your password",
+                      isObscureText: isObscure,
+                      prefixIcon: const Icon(Icons.lock_outline, size: 20),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isObscure
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
                         ),
-                        filled: true,
-                        fillColor: const Color(0xFFF9FAFB),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
+                        onPressed: () => setState(() => isObscure = !isObscure),
                       ),
                     ),
 
@@ -111,31 +95,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 16),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 48,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A56DB),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          "Log In",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
+                    AppTextButton(
+                      buttonText: "Log In",
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      },
                     ),
                     const SizedBox(height: 24),
-
                     const Row(
                       children: [
                         Expanded(child: Divider()),
@@ -156,41 +125,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     Row(
                       children: [
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.g_mobiledata,
-                              color: Colors.black,
-                            ),
-                            label: const Text(
-                              "Google",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Color(0xFFE5E7EB)),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                        SocialLoginButton(
+                          label: "Google",
+                          icon: Icons.g_mobiledata,
+                          onPressed: () {},
                         ),
                         const SizedBox(width: 12),
-                        Expanded(
-                          child: OutlinedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.apple, color: Colors.black),
-                            label: const Text(
-                              "Apple",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(color: Color(0xFFE5E7EB)),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ),
+                        SocialLoginButton(
+                          label: "Apple",
+                          icon: Icons.apple,
+                          onPressed: () {},
                         ),
                       ],
                     ),
