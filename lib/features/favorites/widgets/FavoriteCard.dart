@@ -1,7 +1,9 @@
+import 'package:e_commerce_app/features/cart/cubit/cart_cubit.dart';
+import 'package:e_commerce_app/features/cart/ui/cart_screen.dart';
 import 'package:e_commerce_app/features/details/ui/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce_app/features/home/data/models/product_model.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteCard extends StatelessWidget {
   final ProductModel product;
@@ -34,7 +36,6 @@ class FavoriteCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             Stack(
               children: [
                 ClipRRect(
@@ -50,11 +51,11 @@ class FavoriteCard extends StatelessWidget {
                   top: 10,
                   right: 10,
                   child: GestureDetector(
-                    onTap: (onRemove), 
-                    child: CircleAvatar(
+                    onTap: onRemove,
+                    child: const CircleAvatar(
                       radius: 14,
                       backgroundColor: Colors.white,
-                      child: const Icon(Icons.favorite, color: Colors.red, size: 16),
+                      child: Icon(Icons.favorite, color: Colors.red, size: 16),
                     ),
                   ),
                 ),
@@ -76,8 +77,6 @@ class FavoriteCard extends StatelessWidget {
                   ),
               ],
             ),
-
-          
             Padding(
               padding: const EdgeInsets.fromLTRB(4, 10, 4, 8),
               child: Column(
@@ -111,18 +110,20 @@ class FavoriteCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    product.brand ?? 'Street Style',
+                    product.brand,
                     style: const TextStyle(
                       color: Color(0xFF94A3B8),
                       fontSize: 11,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  
-                 
                   ElevatedButton(
                     onPressed: () {
-                    
+                      context.read<CartCubit>().addItem(product);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CartScreen()),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF0B50DA),
@@ -143,7 +144,6 @@ class FavoriteCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  
                   InkWell(
                     onTap: onRemove,
                     child: Padding(

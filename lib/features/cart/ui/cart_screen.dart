@@ -17,7 +17,7 @@ class CartScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          _buildAppBar(),
+          _buildAppBar(context),
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             sliver: SliverToBoxAdapter(
@@ -26,7 +26,7 @@ class CartScreen extends StatelessWidget {
                   if (state is CartUpdated) {
                     final items = state.items;
                     final cubit = context.read<CartCubit>();
-                    
+
                     if (items.isEmpty) return const EmptyCart();
 
                     return Column(
@@ -40,7 +40,7 @@ class CartScreen extends StatelessWidget {
                               Expanded(flex: 2, child: _buildProductList(items)),
                               const SizedBox(width: 32),
                               Expanded(flex: 1, child: OrderSummary()),
-                            ]
+                            ],
                           )
                         else
                           Column(
@@ -63,26 +63,35 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar() {
+  Widget _buildAppBar(BuildContext context) {
     return SliverAppBar(
       floating: true,
       snap: true,
       backgroundColor: Colors.white,
       elevation: 0,
-      title: const Text('Shopping Cart', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+      title: const Text(
+        'Shopping Cart',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
       centerTitle: false,
       actions: [
-        _buildSortMenu(),
-        _buildClearCartButton(),
+        _buildSortMenu(context),
+        _buildClearCartButton(context),
       ],
     );
   }
 
-  Widget _buildSortMenu() {
+  Widget _buildSortMenu(BuildContext context) {
     return PopupMenuButton<String>(
       icon: const Icon(Icons.sort),
       onSelected: (value) {
-        // هيكمل بعدين
+        final cubit = context.read<CartCubit>();
+        switch (value) {
+          case 'price_asc': cubit.sortByPrice(); break;
+          case 'price_desc': cubit.sortByPrice(ascending: false); break;
+          case 'name_asc': cubit.sortByName(); break;
+          case 'name_desc': cubit.sortByName(ascending: false); break;
+        }
       },
       itemBuilder: (context) => const [
         PopupMenuItem(value: 'price_asc', child: Text('Price: Low to High')),
@@ -93,11 +102,11 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildClearCartButton() {
+  Widget _buildClearCartButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.delete_sweep),
       onPressed: () {
-        // هيكمل بعدين
+        context.read<CartCubit>().clearCart();
       },
     );
   }
@@ -106,7 +115,9 @@ class CartScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('You have ${cubit.totalItems} ${cubit.totalItems == 1 ? 'item' : 'items'} in your cart'),
+        Text(
+          'You have ${cubit.totalItems} ${cubit.totalItems == 1 ? 'item' : 'items'} in your cart',
+        ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(

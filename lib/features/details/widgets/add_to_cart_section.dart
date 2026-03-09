@@ -1,12 +1,14 @@
+import 'package:e_commerce_app/features/cart/cubit/cart_cubit.dart';
 import 'package:e_commerce_app/features/home/data/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/widgets/shared_add_to_cart_button.dart';
 import '../../cart/ui/cart_screen.dart';
 
 class AddToCartSection extends StatelessWidget {
   final ProductModel product;
-  const AddToCartSection({Key? key , required this.product}) : super(key: key);
+  const AddToCartSection({Key? key, required this.product}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,6 @@ class AddToCartSection extends StatelessWidget {
       padding: EdgeInsets.only(top: 24.h),
       child: Row(
         children: [
-          // Quantity Counter
           Container(
             height: 48.h,
             decoration: BoxDecoration(
@@ -24,15 +25,14 @@ class AddToCartSection extends StatelessWidget {
             ),
           ),
           SizedBox(width: 16.w),
-          
-          // Shared Add to Cart Button (takes remaining space)
           Expanded(
             child: SharedAddToCartButton(
               onPressed: () {
+                context.read<CartCubit>().addItem(product);
                 Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => CartScreen()),
-            );
+                  context,
+                  MaterialPageRoute(builder: (_) => const CartScreen()),
+                );
               },
               text: 'Add to Cart',
             ),
