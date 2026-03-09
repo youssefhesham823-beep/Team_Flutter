@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/features/auth/ui/login/login_screen.dart';
 import 'package:e_commerce_app/features/favorites/ui/cubit/favorites_cubit.dart';
 import 'package:e_commerce_app/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class ECommerce extends StatelessWidget {
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: const HomeScreen(),
+            home: const LoginScreen(),
           ),
         );
       },
