@@ -31,7 +31,7 @@ class AddToCartSection extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => CartScreen(product : product)),
+              MaterialPageRoute(builder: (_) => CartScreen()),
             );
               },
               text: 'Add to Cart',
