@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/features/cart/cubit/cart_state.dart';
 import 'package:e_commerce_app/features/home/data/models/product_model.dart';
@@ -10,8 +9,6 @@ class CartCubit extends Cubit<CartState> {
       : _items = List.from(initialItems),
         super(CartUpdated(initialItems));
 
-  // ========== العمليات الأساسية ==========
-  
   void updateQuantity(int index, int newQuantity) {
     if (newQuantity < 1 || index >= _items.length) return;
     _items[index].quantity = newQuantity;
@@ -26,7 +23,6 @@ class CartCubit extends Cubit<CartState> {
 
   void addItem(ProductModel product) {
     final existingIndex = _items.indexWhere((item) => item.product.id == product.id);
-    
     if (existingIndex != -1) {
       _items[existingIndex].quantity++;
     } else {
@@ -41,12 +37,9 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void applyPromoCode(String code) {
-    // logic الخصم هنا
     emit(CartUpdated(List.from(_items)));
   }
 
-  // ========== عمليات الفرز ==========
-  
   void sortByPrice({bool ascending = true}) {
     if (ascending) {
       _items.sort((a, b) => a.product.price.compareTo(b.product.price));
@@ -65,8 +58,6 @@ class CartCubit extends Cubit<CartState> {
     emit(CartUpdated(List.from(_items)));
   }
 
-  // ========== Utilities ==========
-  
   bool isProductInCart(String productId) {
     return _items.any((item) => item.product.id == productId);
   }
@@ -79,10 +70,8 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  // ========== Getters ==========
-  
   List<CartItem> get items => List.unmodifiable(_items);
-  
+
   double get subtotal => _items.fold(0, (sum, item) => sum + (item.product.price * item.quantity));
   double get tax => subtotal * 0.07;
   double get total => subtotal + tax;
