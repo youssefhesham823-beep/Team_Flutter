@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 
-class AppTextFormField extends StatelessWidget {
+class InputField extends StatelessWidget {
   final String hintText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final bool? isObscureText;
   final TextEditingController? controller;
-
-  const AppTextFormField({
+  final String? Function(String?)? validator;
+  const InputField({
     super.key,
     required this.hintText,
     this.prefixIcon,
     this.suffixIcon,
     this.isObscureText,
     this.controller,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      validator: validator,
       obscureText: isObscureText ?? false,
       decoration: InputDecoration(
         hintText: hintText,
