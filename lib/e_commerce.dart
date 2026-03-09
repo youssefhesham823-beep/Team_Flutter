@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/features/auth/ui/login/login_screen.dart';
+import 'package:e_commerce_app/features/cart/cubit/cart_cubit.dart';
 import 'package:e_commerce_app/features/favorites/ui/cubit/favorites_cubit.dart';
 import 'package:e_commerce_app/features/home/ui/screen/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class ECommerce extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => FavoritesCubit()),
+            BlocProvider(create: (_) => CartCubit()),
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,
